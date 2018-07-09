@@ -1,4 +1,4 @@
-package com.company;
+package com.company.Fail;
 
 import java.io.*;
 import java.util.*;

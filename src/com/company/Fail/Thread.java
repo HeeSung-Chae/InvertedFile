@@ -1,4 +1,4 @@
-package com.company;
+package com.company.Fail;
 
 public class Thread extends java.lang.Thread {
     public void run(){

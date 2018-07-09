@@ -1,10 +1,15 @@
 package com.company;
 
-import java.util.*;  // Provides TreeMap, Iterator, Scanner
-import java.io.*;    // Provides FileReader, FileNotFoundException
 
-public class Another
+import java.io.*;
+import java.util.Iterator;
+import java.util.TreeMap;
+
+public class InvertedFile
 {
+    static String input = "src/com/company/input.small";
+    static String output = "src/com/company/output.small";
+
     public static void main(String[ ] args) throws IOException
     {
         TreeMap<String, TreeMap<Integer, Integer>> frequencyData = new TreeMap<>( );
@@ -111,8 +116,4 @@ public class Another
 
         frequencyData.remove("");
     }
-
-    // Array of documents
-    static String input = "src/com/company/input.small";
-    static String output = "src/com/company/output.small";
 }
