@@ -9,9 +9,8 @@ public class Another
     {
         TreeMap<String, TreeMap<Integer, Integer>> frequencyData = new TreeMap<>( );
 
-        readWordFile(frequencyData);
-        sortTreeMap(frequencyData);
-//        printAllCounts(frequencyData);
+        readFile(frequencyData);
+        sortAndPrint(frequencyData);
     }
 
 
@@ -41,8 +40,11 @@ public class Another
         }
     }
 
-    public static void sortTreeMap(TreeMap<String, TreeMap<Integer, Integer>> frequencyData)
+    public static void sortAndPrint(TreeMap<String, TreeMap<Integer, Integer>> frequencyData) throws IOException
     {
+        File path_output = new File(output);
+        FileOutputStream oStream = new FileOutputStream(path_output.getAbsolutePath());
+
         for(String word : frequencyData.keySet())
         {
             Iterator iterator = frequencyData.get(word).keySet().iterator();
@@ -59,8 +61,7 @@ public class Another
                 }
             }
 
-
-            System.out.print(word);
+            oStream.write(word.getBytes());
             for(int i=max; i > 0; i--)
             {
                 iterator = frequencyData.get(word).keySet().iterator();
@@ -70,41 +71,21 @@ public class Another
                     count = frequencyData.get(word).get(docNum);
                     if(count == i)
                     {
-                        System.out.print(" " + docNum + " " + count);
+                        oStream.write((" " + docNum + " " + count).getBytes());
                     }
                 }
             }
-            System.out.println();
+            oStream.write("\n".getBytes());
         }
-        System.out.println(frequencyData.size());
-    }
-
-    public static void printAllCounts(TreeMap<String, TreeMap<Integer, Integer>> frequencyData)
-    {
-
-        for(String word : frequencyData.keySet( ))
-        {
-            System.out.print(word);
-            Iterator iterator = frequencyData.get(word).keySet().iterator();
-            Object docNum;
-            while(iterator.hasNext())
-            {
-                docNum = iterator.next();
-                System.out.print(" " + docNum + " " + frequencyData.get(word).get(docNum));
-            }
-            System.out.println();
-        }
-        System.out.println(frequencyData.size());
+        oStream.close();
     }
 
 
-    public static void readWordFile(TreeMap<String, TreeMap<Integer, Integer>> frequencyData) throws IOException
+    public static void readFile(TreeMap<String, TreeMap<Integer, Integer>> frequencyData) throws IOException
     {
         File path_input = new File(input);
         FileInputStream iStream = new FileInputStream(path_input.getAbsolutePath());
         BufferedReader iReader = new BufferedReader(new InputStreamReader(iStream));
-
-        Integer count;
 
         // Input Sentence
         String strLine;
@@ -120,7 +101,7 @@ public class Another
             String regex = "\\W";
             String reSent = sentence.replaceAll(regex, " ");
 
-            // Get the current count of this word, add one, and then store the new count
+            // 문자 카운트
             for(String s : reSent.split(" "))
             {
                 TreeMap<Integer, Integer> temp = getCount(s, docNum, frequencyData);
@@ -132,5 +113,6 @@ public class Another
     }
 
     // Array of documents
-    static String input = "src/com/company/data/input.small";
+    static String input = "src/com/company/input.small";
+    static String output = "src/com/company/output.small";
 }
