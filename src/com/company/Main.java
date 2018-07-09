@@ -3,8 +3,10 @@ package com.company;
 import java.io.*;
 import java.util.*;
 
-public class Main {
-    public static void main(String[] args) throws IOException {
+public class Main{
+    public static void main(String[] args) throws IOException{
+        Thread thread = new Thread();
+
         File path_inputS = new File("src/com/company/data/input.small");
         File path_outputS = new File("src/com/company/data/output.small");
         File path_inputB = new File("src/com/company/data/input.big");
@@ -74,6 +76,7 @@ public class Main {
                             else {
                                 tempList.add(docNum);
                                 tempList.add(1);
+                                thread.run();
                             }
                         }
                     }
