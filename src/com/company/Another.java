@@ -10,8 +10,8 @@ public class Another
         TreeMap<String, TreeMap<Integer, Integer>> frequencyData = new TreeMap<>( );
 
         readWordFile(frequencyData);
-        // 요기에 정렬 함수 있으면 될듯
-        printAllCounts(frequencyData);
+        sortTreeMap(frequencyData);
+//        printAllCounts(frequencyData);
     }
 
 
@@ -41,19 +41,56 @@ public class Another
         }
     }
 
+    public static void sortTreeMap(TreeMap<String, TreeMap<Integer, Integer>> frequencyData)
+    {
+        for(String word : frequencyData.keySet())
+        {
+            Iterator iterator = frequencyData.get(word).keySet().iterator();
+            Object docNum;
+            int count;
+            int max = 0;
+            while(iterator.hasNext())
+            {
+                docNum = iterator.next();
+                count = frequencyData.get(word).get(docNum);
+                if(count > max)
+                {
+                    max = count;
+                }
+            }
+
+
+            System.out.print(word);
+            for(int i=max; i > 0; i--)
+            {
+                iterator = frequencyData.get(word).keySet().iterator();
+                while(iterator.hasNext())
+                {
+                    docNum = iterator.next();
+                    count = frequencyData.get(word).get(docNum);
+                    if(count == i)
+                    {
+                        System.out.print(" " + docNum + " " + count);
+                    }
+                }
+            }
+            System.out.println();
+        }
+        System.out.println(frequencyData.size());
+    }
+
     public static void printAllCounts(TreeMap<String, TreeMap<Integer, Integer>> frequencyData)
     {
-        frequencyData.remove("");
 
         for(String word : frequencyData.keySet( ))
         {
             System.out.print(word);
             Iterator iterator = frequencyData.get(word).keySet().iterator();
-            Object object;
+            Object docNum;
             while(iterator.hasNext())
             {
-                object = iterator.next();
-                System.out.print(" " + object + " " + frequencyData.get(word).get(object));
+                docNum = iterator.next();
+                System.out.print(" " + docNum + " " + frequencyData.get(word).get(docNum));
             }
             System.out.println();
         }
@@ -90,6 +127,8 @@ public class Another
                 frequencyData.put(s, temp);
             }
         }
+
+        frequencyData.remove("");
     }
 
     // Array of documents
