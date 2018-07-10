@@ -2,16 +2,26 @@ package com.company;
 
 
 import java.io.*;
+import java.net.URLDecoder;
 import java.util.Iterator;
 import java.util.TreeMap;
 
 public class InvertedFile
 {
-    static String input = "src/com/company/input.small";
-    static String output = "src/com/company/output.small";
+    static String input = "input.big";
+    static String output = "output.big";
 
-    public static void main(String[ ] args) throws IOException
-    {
+    public static void main(String[ ] args) throws IOException {
+        int count = 0;
+        for (String arg : args)
+        {
+            if(count == 0)
+                input = arg;
+            else
+                output = arg;
+            count++;
+        }
+
         TreeMap<String, TreeMap<Integer, Integer>> frequencyData = new TreeMap<>( );
 
         readFile(frequencyData);
@@ -36,7 +46,7 @@ public class InvertedFile
         }
         else
         {
-            frequencyData.put(word, new TreeMap<Integer, Integer>(){
+            frequencyData.put(word, new TreeMap<>(){
                 {
                     put(docNum, 1);
                 }
@@ -47,8 +57,11 @@ public class InvertedFile
 
     public static void sortAndPrint(TreeMap<String, TreeMap<Integer, Integer>> frequencyData) throws IOException
     {
-        File path_output = new File(output);
-        FileOutputStream oStream = new FileOutputStream(path_output.getAbsolutePath());
+        String path = InvertedFile.class.getProtectionDomain().getCodeSource().getLocation().getPath();
+        String decodedPath = URLDecoder.decode(path, "UTF-8").replace("InvertedFile.jar", "");
+
+        File path_output = new File(decodedPath + output);
+        FileOutputStream oStream = new FileOutputStream(path_output);
 
         for(String word : frequencyData.keySet())
         {
@@ -88,25 +101,25 @@ public class InvertedFile
 
     public static void readFile(TreeMap<String, TreeMap<Integer, Integer>> frequencyData) throws IOException
     {
-        File path_input = new File(input);
-        FileInputStream iStream = new FileInputStream(path_input.getAbsolutePath());
+        String path = InvertedFile.class.getProtectionDomain().getCodeSource().getLocation().getPath();
+        String decodedPath = URLDecoder.decode(path, "UTF-8").replace("InvertedFile.jar", "");
+
+        File path_input = new File(decodedPath + input);
+        FileInputStream iStream = new FileInputStream(path_input);
         BufferedReader iReader = new BufferedReader(new InputStreamReader(iStream));
 
-        // Input Sentence
+
         String strLine;
         while((strLine = iReader.readLine()) != null)
         {
             strLine = strLine.toLowerCase();
 
-            // Document Number, Sentence
             int docNum = Integer.parseInt(strLine.split(" ")[0]);
             String sentence = strLine.replace(docNum + " ", "");
 
-            // 문자 처리
             String regex = "\\W";
             String reSent = sentence.replaceAll(regex, " ");
 
-            // 문자 카운트
             for(String s : reSent.split(" "))
             {
                 TreeMap<Integer, Integer> temp = getCount(s, docNum, frequencyData);
