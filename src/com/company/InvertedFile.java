@@ -120,6 +120,8 @@ public class InvertedFile
             String regex = "\\W";
             String reSent = sentence.replaceAll(regex, " ");
 
+            
+
             for(String s : reSent.split(" "))
             {
                 TreeMap<Integer, Integer> temp = getCount(s, docNum, frequencyData);
