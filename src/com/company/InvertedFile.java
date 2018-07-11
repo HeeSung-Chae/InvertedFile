@@ -117,10 +117,8 @@ public class InvertedFile
             int docNum = Integer.parseInt(strLine.split(" ")[0]);
             String sentence = strLine.replace(docNum + " ", "");
 
-            String regex = "\\W";
+            String regex = "[^\uAC00-\uD7A3xfe0-9a-zA-Z\\s]";
             String reSent = sentence.replaceAll(regex, " ");
-
-            
 
             for(String s : reSent.split(" "))
             {
